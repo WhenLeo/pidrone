@@ -1,0 +1,9 @@
+# XboxController踩坑记
+
+为了省钱，不想购买遥控和接收机，想利用树莓派的网卡和手上闲置许久的Xbox手柄来控制无人机，而且后续希望能够进行路线规划，所以先实现一套树莓派连接飞控，控制无人机飞行的飞行调度逻辑。这里记录下相关控制的开发流程。
+
+## 1 Xbox手柄的连接
+  2020款的Xbox手柄支持蓝牙、2.4G接收器、USB-C有线三种连接方式。Windows和Mac下可以直接连接，Linux下需要安装驱动，这里使用[xpadneo](https://github.com/atar-axis/xpadneo)方案文档比较清晰，安装简单。
+驱动安装好之后，测试USB-C是可以正常识别，理论上接收器也可以（未测试），但是始终无法通过蓝牙连接到树莓派。具体表现为，树莓派中bluetoothctl可以正常pair和connect到手柄，但是连接完之后手柄一直是慢闪灯状态（1次/s），
+此时查看树莓派下设备，有一个/dev/input/js0，，其中是手柄按钮的映射键值对，如果连接正常的话，手柄动作，对应数值会有变化，这里没有变化。且放置一段时间后，手柄自动关机。最后通过 https://github.com/YinXunzhe/JimnyRChttps://github.com/YinXunzhe/JimnyRC
+中介绍的方法解决了问题，特别感谢。
